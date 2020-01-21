@@ -13,11 +13,8 @@ int	main(void)
 	{
 		printf("%s\n", line);
 		free(line);
-		line = NULL;
 	}
 	printf("%s", line);
 	free(line);
-	line = NULL;
-//	system("leaks get_next_line\n");
 	return (0);
 }

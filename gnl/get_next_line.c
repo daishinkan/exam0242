@@ -6,7 +6,7 @@
 /*   By: ekindomb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:56:05 by ekindomb          #+#    #+#             */
-/*   Updated: 2020/01/21 11:56:08 by ekindomb         ###   ########.fr       */
+/*   Updated: 2020/01/21 12:41:34 by ekindomb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ int		get_next_line(char **line)
 		else
 		{
 			eol = ft_strjoin(*line, "\0");
+			ft_strclr(*line);
 			free(*line);
 			*line = ft_strdup(eol);
 		}
