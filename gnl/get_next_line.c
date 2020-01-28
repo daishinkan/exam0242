@@ -6,7 +6,7 @@
 /*   By: ekindomb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 11:56:05 by ekindomb          #+#    #+#             */
-/*   Updated: 2020/01/21 12:41:34 by ekindomb         ###   ########.fr       */
+/*   Updated: 2020/01/28 09:34:22 by ekindomb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int		ret_line(char **stack, char **line)
 		*(stack[0] + ft_strcspn(stack[0], "\n")) = '\0';
 		*line = ft_strdup(stack[0]);
 		buff= ft_strdup(ft_strchr(stack[0], '\0') + 1);
+		ft_strclr(stack[0]);
 		free(stack[0]);
 		stack[0] = ft_strdup(buff);
 		free(buff);
@@ -171,9 +172,9 @@ int		get_next_line(char **line)
 		free(buf);
 	}
 	ret = ret_line(stack, line);
-	if (ret)
+	if (ret == 1)
 		return (1);
-	else
+	else if (ret == 0)
 	{
 		if (!*line)
 			*line = ft_strdup("\0");
@@ -184,6 +185,9 @@ int		get_next_line(char **line)
 			free(*line);
 			*line = ft_strdup(eol);
 		}
+		stack[0] = NULL;
 		return (0);
 	}
+	else
+		return (-1);
 }
