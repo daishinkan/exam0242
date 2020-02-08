@@ -148,6 +148,8 @@ int		get_next_line(char **line)
 	int ret;
 	char *eol = NULL;
 
+	if(!line)
+		return(-1);
 	if (!(stack[0]))
 		stack[0] = ft_strnew(0);
 	while (!(ft_strchr(stack[0], '\n')))
