@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ekindomb <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/21 11:56:05 by ekindomb          #+#    #+#             */
-/*   Updated: 2020/01/28 09:34:22 by ekindomb         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
 int		ft_strlen(char *str)
@@ -17,7 +5,7 @@ int		ft_strlen(char *str)
 	int i;
 
 	i = 0;
-	while(str[i])
+	while (str[i] != 0)
 		i++;
 	return (i);
 }
@@ -28,9 +16,14 @@ char	*ft_strdup(char *str)
 	char *copy;
 	
 	i = 0;
+	if (!(str))
+	{
+		copy = 0;
+		return (copy);
+	}
 	if (!(copy = (char *)malloc(sizeof(char) * ft_strlen(str) + 1)))
 		return (NULL);
-	while (str[i])
+	while (str[i] != 0)
 	{
 		copy[i] = str[i];
 		i++;
@@ -53,12 +46,12 @@ char	*ft_strjoin(char *s1, char *s2)
 	j = 0;
 	if (!(join = (char *)malloc(sizeof(char) * (n + m) + 1)))
 		return (NULL);
-	while (s1[i])
+	while (s1[i] != 0)
 	{
 		join[i] = s1[i];
 		i++;
 	}
-	while (s2[j])
+	while (s2[j] != 0)
 	{
 		join[i + j] = s2[j];
 		j++;
@@ -74,7 +67,7 @@ char *ft_strchr(char *str, int c)
 	i = 0;
 	if ((char) c == '\0')
 	   return (&str[ft_strlen(str)]);
-	while (str[i])
+	while (str[i] != 0)
 	{
 		if (str[i] == (char)c)
 			return (&str[i]);
@@ -93,6 +86,7 @@ void	ft_strclr(char *str)
 		str[i] = '\0';
 		i++;
 	}
+	str[i] = '\0';
 }
 
 int		ft_strcspn(char *str, char *charset)
@@ -101,7 +95,7 @@ int		ft_strcspn(char *str, char *charset)
 
 	count = 0;
 	while (ft_strchr(charset, *str++) == 0)
-		count++;
+			count++;
 	return (count);
 }
 
@@ -109,8 +103,6 @@ int		ret_line(char **stack, char **line)
 {
 	char *buff;
 
-	if (!*stack[0])
-		return (0);
 	if (ft_strchr(stack[0], '\n'))
 	{
 		*(stack[0] + ft_strcspn(stack[0], "\n")) = '\0';
@@ -124,9 +116,8 @@ int		ret_line(char **stack, char **line)
 	}
 	else
 	{
-		*line = ft_strdup(stack[0]);
-		ft_strclr(stack[0]);
-		free(stack[0]);
+		*line = stack[0];
+		stack[0] = 0;
 	}
 	return (0);
 }
@@ -152,13 +143,11 @@ int		get_next_line(char **line)
 {
 	char buffer[BUFFER_SIZE + 1];
 	char *buf;
-	static char *stack[fd_limit];
+	static char *stack[1];
 	int i;
 	int ret;
 	char *eol = NULL;
 
-	if (!line || read(0, buffer, 0) == -1 || BUFFER_SIZE == 0)
-		return (-1);
 	if (!(stack[0]))
 		stack[0] = ft_strnew(0);
 	while (!(ft_strchr(stack[0], '\n')))
@@ -181,11 +170,10 @@ int		get_next_line(char **line)
 		else
 		{
 			eol = ft_strjoin(*line, "\0");
-			ft_strclr(*line);
 			free(*line);
 			*line = ft_strdup(eol);
 		}
-		stack[0] = NULL;
+		free(eol);
 		return (0);
 	}
 	else
